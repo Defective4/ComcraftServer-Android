@@ -5,40 +5,32 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import javax.swing.JList;
-
+import android.content.Context;
 import net.comcraft.server.ServerThread;
 import net.comcraft.server.Settings;
 
 public class Server implements NetHandler {
     Logger logger;
-    private Settings settings;
+    private final Settings settings;
     private ServerThread server = null;
     private World world;
     private ArrayList<Player> players;
     private String root;
-    private ArrayList<JList<String>> pListObserver = new ArrayList<JList<String>>();
     public ModLoader modLoader;
     public static final String version = "0.6";
     public static final short SERVER_VERSION = 2;
 
-    public Server(Logger logger) {
+    public Server(Logger logger, Context ctx, Settings settings) {
         this.logger = logger;
         modLoader = new ModLoader();
+        root = ctx.getFilesDir().toString();
+        this.settings = settings;
     }
 
     public boolean start() {
         players = new ArrayList<Player>();
-        logger.info("Attempting to start Comcraft Server (Version " + (SERVER_VERSION / 10) + "." + SERVER_VERSION + ")");
-        root = System.getProperty("user.dir");
-        try {
-            settings = new Settings(root);
-        } catch (IOException e) {
-            e.printStackTrace();
-            logger.severe("Unable to load properties file. Error: " + e.getMessage());
-            return false;
-        }
-        settings.loadSettings();
+        logger.info(
+                "Attempting to start Comcraft Server (Version " + (SERVER_VERSION / 10) + "." + SERVER_VERSION + ")");
         logger.fine("Loaded Settings");
         modLoader.initMods(root, this);
         File pDir = new File(root, "players");
@@ -83,7 +75,8 @@ public class Server implements NetHandler {
             }
         }
         Chunk chunk = world.getChunkFromChunkCoords(packetBlockChange.chunkX, packetBlockChange.chunkZ);
-        chunk.setBlockIDWithMetadata(packetBlockChange.x, packetBlockChange.y, packetBlockChange.z, packetBlockChange.id, packetBlockChange.metadata);
+        chunk.setBlockIDWithMetadata(packetBlockChange.x, packetBlockChange.y, packetBlockChange.z,
+                packetBlockChange.id, packetBlockChange.metadata);
     }
 
     @Override
@@ -105,9 +98,6 @@ public class Server implements NetHandler {
         for (int p = 0; p < players.size(); p++) {
             s[p] = players.get(p).getName();
         }
-        for (int i = 0; i < pListObserver.size(); i++) {
-            pListObserver.get(i).setListData(s);
-        }
     }
 
     @Override
@@ -126,9 +116,6 @@ public class Server implements NetHandler {
         for (int p = 0; p < players.size(); p++) {
             s[p] = players.get(p).getName();
         }
-        for (int i = 0; i < pListObserver.size(); i++) {
-            pListObserver.get(i).setListData(s);
-        }
     }
 
     @Override
@@ -145,10 +132,6 @@ public class Server implements NetHandler {
                 }
             }
         }
-    }
-
-    public void addPlayerListObserver(JList<String> list) {
-        pListObserver.add(list);
     }
 
     @Override

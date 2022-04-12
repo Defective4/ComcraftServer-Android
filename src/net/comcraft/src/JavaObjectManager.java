@@ -1,8 +1,8 @@
 package net.comcraft.src;
 
 import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Proxy;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.Enumeration;
 
 import com.google.minijoe.sys.JsArray;
@@ -35,13 +35,13 @@ public class JavaObjectManager extends JsObject {
         if (id == ID_CLASS) {
             try {
                 createClass(stack, sp);
-            } catch (ReflectiveOperationException e) {
+            } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void createClass(JsArray stack, int sp) throws ReflectiveOperationException {
+    private void createClass(JsArray stack, int sp) throws ClassNotFoundException{
         String className = stack.getString(sp + 2);
         String superClassName = stack.getString(sp + 3);
         JsFunction classBody = (JsFunction) stack.getJsObject(sp + 4);

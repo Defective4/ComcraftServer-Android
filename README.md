@@ -1,15 +1,20 @@
-﻿# Comcraft Mod Loader Server
+# Comcraft Mod Loader Server for Android
 ---
 
-This is the server counterpart to the multiplayer ability of [Comcraft Mod Loader](https://github.com/simon816/ComcraftModLoader)
+This is a port of [Comcraft Mod Loader Server](https://github.com/simon816/ComcraftServer) by [simon816](https://github.com/simon816)
 
-A lot of the core game code is copied from the original Comcraft, licensed under GPL-3.0.
+Most of the source code is left as is. I just added some functionality required to run it on Android devices.
 
-The code was originally written from approximately late 2013 to April 2014.
+### Requirements
+An Android device with at least API level 16 (Android 4.1 Jellybean)
+
+### Downloads
+
+See [releases](https://github.com/Defective4/ComcraftServer-Android/releases/latest) page
 
 ### License
 ```
-Copyright (C) 2013 Piotr Wójcik
+Copyright (C) 2013 Piotr W�jcik
 Copyright (C) 2013-2014 Simon816
 
 This program is free software: you can redistribute it and/or modify

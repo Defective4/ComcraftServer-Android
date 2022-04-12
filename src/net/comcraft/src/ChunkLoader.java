@@ -5,9 +5,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.Hashtable;
+
+import net.comcraft.server.IOUtil;
 
 public class ChunkLoader {
     private World world;
@@ -124,7 +124,7 @@ public class ChunkLoader {
             if (fis != null) {
                 fis.close();
             }
-            Files.copy(file.toPath(), tmp.toPath());
+            IOUtil.copy(file, tmp);
             fis = new FileInputStream(tmp);
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -171,7 +171,8 @@ public class ChunkLoader {
         fis = null;
 
         try {
-            Files.move(tmp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            IOUtil.copy(tmp, file);;
+            tmp.delete();
         } catch (IOException e) {
             e.printStackTrace();
         }
